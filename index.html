@@ -32,7 +32,9 @@
             
             try {
                 await navigator.share({
-                    title: "Some example thing"
+                    title: "Some example thing",
+                    text: "This is some example data",
+                    files: [file]
                 })
             } catch (error) {
                 alert(error)
