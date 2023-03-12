@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Photo Test</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' integrity='sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==' crossorigin='anonymous' referrerpolicy='no-referrer' />
+</head>
+<body>
+    <div class="p-6">
+        <div class="flex mb-3">
+            <button onclick="startCamera()" class="button mr-2">Start Camera</button>
+            <button onclick="takePhoto()" class="button">Take Photo</button>
+            <button onclick="share()" class="button">Share</button>
+        </div>
+        <video id="camera" autoplay></video>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        let video = document.getElementById("camera")
+        let canvas = document.querySelector("#canvas")
+
+        async function share() {
+            const url = canvas.toDataURL('image/jpeg');
+
+            const res = await fetch(url)
+            const blob = await res.blob()
+            const file = new File([blob], "test.jpeg", { type: "image/jpeg" })
+            
+            try {
+                await navigator.share({
+                    title: "Some example thing"
+                })
+            } catch (error) {
+                alert(error)
+            }
+        }
+
+        async function startCamera() {
+            let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            video.srcObject = stream
+            setTimeout(() => {
+                console.log(getComputedStyle(video))
+            }, 1000)
+        }
+
+        function takePhoto() {
+            let style = getComputedStyle(video)
+            console.log(style.width, style.height)
+            
+            canvas.width = style.width.replace("px", "")
+            canvas.height = style.height.replace("px", "")
+            
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            let image_data_url = canvas.toDataURL('image/jpeg');
+            console.log(image_data_url);
+        }
+    </script>
+</body>
+</html>
