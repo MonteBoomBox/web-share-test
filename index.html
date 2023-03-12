@@ -24,7 +24,7 @@
         let canvas = document.querySelector("#canvas")
 
         async function share() {
-            const url = canvas.toDataURL('image/jpeg');
+            const url = canvas.toDataURL('image/jpeg', 1);
 
             const res = await fetch(url)
             const blob = await res.blob()
@@ -32,8 +32,8 @@
             
             try {
                 await navigator.share({
-                    title: "Some example thing",
-                    text: "This is some example data",
+                    title: "Awesome Work",
+                    text: "This is awesome.",
                     files: [file]
                 })
             } catch (error) {
