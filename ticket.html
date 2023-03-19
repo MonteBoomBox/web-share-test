@@ -22,7 +22,7 @@
             
             var printableXml = encoder.setPrintMode("page");
             
-            printableXml += encoder.pm_setPrintingArea({x:0, y:0, width:384, height:800})
+            printableXml += encoder.pm_setPrintingArea({x:0, y:0, width:384, height:500})
             printableXml += encoder.addText({underline:1, width:2, height:2, data:"Gunj India"})
             printableXml += encoder.addNewLine();
             printableXml += encoder.addText({underline:0, width:1, height:1, data : "CSMVS"})
@@ -39,11 +39,16 @@
             printableXml += encoder.addNewLine();
             
             printableXml+= encoder.addQrCode({version:0, level:'H', size: 5, data:"Ticket Data Here"});
+            
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addNewLine();
             printableXml += encoder.addNewLine();
 
             printableXml += encoder.addText({underline:0, width:2, height:2, data:"TA74G"})
             
-            printableXml+= encoder.addFeedNLine(2);
+            printableXml+= encoder.addFeedNLine(1);
             printableXml+= encoder.setCutting(0);
             printableXml+= encoder.printData("page");
             printableXml+= encoder.setPrintMode("standard");
