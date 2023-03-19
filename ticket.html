@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Printing Test</title>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' integrity='sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==' crossorigin='anonymous' referrerpolicy='no-referrer' />
+    <script type="text/javascript" charset="utf-8" src='./js/WSEncoder-1.0.0.min.js'></script>
+    <script type="text/javascript" charset="utf-8" src='./js/WSComm-1.0.0.min.js'></script>
+</head>
+<body>
+    <div class="p-5">
+        <button id="printBtn" class="button">Print</button>
+    </div>
+
+    <script>
+        function printData() {
+            var comm = new WSComm();
+            var encoder = new WSEncoder();
+            
+            var printableXml = encoder.setPrintMode("page");
+            
+            printableXml += encoder.pm_setPrintingArea({x:0, y:0, width:384, height:800})
+            printableXml += encoder.addText({underline:1, width:2, height:2, data:"Gunj India"})
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addText({underline:0, width:1, height:1, data : "CSMVS"})
+            
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addNewLine();
+            
+            printableXml += encoder.setFontSize(1);
+            printableXml += encoder.addText({ data: "Date: 19 March 2023" })
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addText({ data: "Price: ₹10.00" })
+            
+            printableXml += encoder.addNewLine();
+            printableXml += encoder.addNewLine();
+            
+            printableXml+= encoder.addQrCode({version:0, level:'H', size: 5, data:"Ticket Data Here"});
+            printableXml += encoder.addNewLine();
+
+            printableXml += encoder.addText({underline:0, width:2, height:2, data:"TA74G"})
+            
+            printableXml+= encoder.addFeedNLine(2);
+            printableXml+= encoder.setCutting(0);
+            printableXml+= encoder.printData("page");
+            printableXml+= encoder.setPrintMode("standard");
+            
+            comm.send(printableXml)
+        }
+
+        document.querySelector("#printBtn").addEventListener("click", printData)
+    </script>
+</body>
+</html>
